@@ -8,3 +8,6 @@ CREATE TABLE student(
     groupId INTEGER,
     FOREIGN KEY (groupId) REFERENCES class(id)
 );
+
+select * 
+from student
