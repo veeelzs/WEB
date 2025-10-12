@@ -19,12 +19,12 @@ const Students = (): React.ReactElement => {
 
   return (
     <div className={styles.Students}>
-      {/* Компонент добавления студента */}
+      {/* добавление студента */}
       <AddStudent onAddStudent={onAddStudentHandler} />
       
-      {/* Список студентов */}
+      {/* список студентов */}
       <div className={styles.studentsList}>
-        <h3>Список студентов ({students.length})</h3>
+        <h3>Список студентов</h3> {}
         {students.length === 0 ? (
           <p>Нет студентов</p>
         ) : (
