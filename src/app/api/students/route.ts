@@ -1,5 +1,5 @@
-import { getStudentsDb } from '@/db/studentDb';
-import { addStudentDb } from '@/db/studentDb';
+import { getStudentsDb } from '../../../db/studentDb';
+import { addStudentDb } from '../../../db/studentDb';
 import type StudentInterface from '@/types/StudentInterface';
 
 export async function GET(): Promise<Response> {
