@@ -1,10 +1,22 @@
+$width: 400px;
+
 .AddStudent {
-    margin-bottom: 20px;
+  margin-bottom: 30px;
+  width: 400px;
+
+  input {
+    width: calc($width - 8px);
   }
-  
-  .form {
+
+  input[type=submit] {
+    width: $width;
+  }
+
+
+  form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    max-width: 300px;
+    gap: 15px;
   }
+
+}
