@@ -14,22 +14,32 @@ const Students = (): React.ReactElement => {
     addStudentMutate,
   } = useStudents();
 
+  /**
+   * Удаление студента - обработчик события нажатия "удалить"
+   * @param studentId Ид студента
+   */
   const onDeleteHandler = (studentId: number): void => {
     if (confirm('Удалить студента?')) {
+      console.log('onDeleteHandler', studentId);
+      debugger;
+
       deleteStudentMutate(studentId);
     }
   };
 
+  /**
+   * Добавления студента - обработчик события нажатия "добавить"
+   * @param studentFormField Форма студента
+   */
   const onAddHandler = (studentFormField: FormFields): void => {
-    const nextid = students.length>0 ? Math.max(...students.map(s=> s.id))+1 : 1
     console.log('Добавление студента', studentFormField);
+    debugger;
 
     addStudentMutate({
-      id: nextid,
+      id: -1,
       ...studentFormField,
       groupId: 1,
       uuid: uuidv4(),
-      contacts: ''
     });
   };
 
