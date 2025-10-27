@@ -51,8 +51,8 @@ const useStudents = (): StudentsHookInterface => {
     },
     onError: (err, variables, context) => {
       console.log('deleteStudentMutate  err', err);
-      debugger;
       queryClient.setQueryData<StudentInterface[]>(['students'], context?.previousStudents);
+      debugger;
     },
     // обновляем данные в случаи успешного выполнения mutationFn: async (studentId: number) => deleteStudentApi(studentId),
     onSuccess: async (studentId, variables, { previousStudents }) => {
