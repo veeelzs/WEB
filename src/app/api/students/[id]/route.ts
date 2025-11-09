@@ -1,13 +1,11 @@
 import { deleteStudentDb } from '@/db/studentDb';
-import { type NextApiRequest } from 'next/types';
 
 interface Params {
-  params: { id: number };
+  params: { id: string };
 }
 
-export async function DELETE(req: NextApiRequest, { params }: Params): Promise<Response> {
-  const p = await params;
-  const studentId = await p.id;
+export async function DELETE(_req: Request, { params }: Params): Promise<Response> {
+  const studentId = Number(params.id);
   const deletedStudentId = await deleteStudentDb(studentId);
 
   return new Response(JSON.stringify({ deletedStudentId }), {
@@ -15,4 +13,4 @@ export async function DELETE(req: NextApiRequest, { params }: Params): Promise<R
       'Content-Type': 'application/json',
     },
   });
-};
+}
