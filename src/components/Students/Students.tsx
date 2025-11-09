@@ -14,7 +14,7 @@ const Students = (): React.ReactElement => {
     addStudentMutate,
   } = useStudents();
 
-  /**
+   /**
    * Удаление студента - обработчик события нажатия "удалить"
    * @param studentId Ид студента
    */
@@ -22,13 +22,13 @@ const Students = (): React.ReactElement => {
     if (confirm('Удалить студента?')) {
       debugger;
       console.log('onDeleteHandler', studentId);
-      
+
 
       deleteStudentMutate(studentId);
     }
   };
 
-  /**
+   /**
    * Добавления студента - обработчик события нажатия "добавить"
    * @param studentFormField Форма студента
    */
@@ -41,7 +41,7 @@ const Students = (): React.ReactElement => {
       uuid: uuidv4(),
       ...studentFormField,
       contacts: "не заполнено",
-      groupId: 1,
+      groupId: studentFormField.groupId || 1,
     });
   };
 
@@ -50,11 +50,13 @@ const Students = (): React.ReactElement => {
       <AddStudent onAdd={onAddHandler} />
 
       {students.map((student: StudentInterface) => (
-        <Student
-          key={student.id || student.uuid}
-          student={student}
-          onDelete={onDeleteHandler}
-        />
+        <div key={student.id || student.uuid} className={styles.StudentWrapper}>
+          <Student student={student} onDelete={onDeleteHandler} />
+          {/* Выводим группу студента */}
+          <div style={{ fontSize: '0.9em', color: '#555', marginTop: '4px' }}>
+            {student.group ? `Группа: ${student.group.name}` : 'Группа: не указана'}
+          </div>
+        </div>
       ))}
     </div>
   );
