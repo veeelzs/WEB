@@ -1,5 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Student } from './Student.entity';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 @Entity({ name: 'class' })
 export class Group {
@@ -11,7 +10,4 @@ export class Group {
 
   @Column()
   contacts!: string;
-
-  @OneToMany(() => Student, student => student.group)
-  students!: Student[];
 }
