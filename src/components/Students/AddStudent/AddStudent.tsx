@@ -54,7 +54,7 @@ const AddStudent = ({ onAdd }: Props): React.ReactElement => {
         />
         {errors.middleName && <div>Обязательное поле</div>}
 
-        <select {...register('groupId', { required: true })}>
+        <select {...register('groupId', { required: false })}>
           <option value="">Выберите группу</option>
           {groups.map((group: GroupInterface) => (
             <option key={group.id} value={group.id}>{group.name}</option>
