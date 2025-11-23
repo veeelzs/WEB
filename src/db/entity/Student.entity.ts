@@ -6,9 +6,6 @@ export class Student {
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Column({ default: '' })
-  uuid?: string;
-  
   @Column()
   firstName!: string;
 
@@ -18,13 +15,13 @@ export class Student {
   @Column()
   middleName!: string;
 
-  @Column({ default: '' })
-  contacts?: string;
+  @Column()
+  contacts!: string;
 
   @Column()
   groupId!: number;
 
-  @ManyToOne(() => Group, { nullable: true })
+  @ManyToOne(() => Group, (group) => group.students, {eager: true, nullable: true })
   @JoinColumn({ name: 'groupId' })
-  group?: Group;
+  group!: Group | null;
 }

@@ -10,13 +10,15 @@ const studentRepository = AppDataSource.getRepository(Student);
  * @returns Promise<StudentInterface[]>
  */
 export const getStudentsDb = async (): Promise<StudentInterface[]> => {
-  return await studentRepository.find({ relations: ['group'] }) as StudentInterface[];
+  return await studentRepository.find({
+    relations: ['group'],
+  });
 };
 
 /**
  * Удаления студента
  * @param studentId ИД удаляемого студента
- * @returns Promise<number>
+ * @returns
  */
 export const deleteStudentDb = async (studentId: number): Promise<number> => {
   await studentRepository.delete(studentId);
@@ -26,7 +28,7 @@ export const deleteStudentDb = async (studentId: number): Promise<number> => {
 /**
  * Добавление студента
  * @param studentField поля студента
- * @returns Promise<StudentInterface>
+ * @returns
  */
 export const addStudentDb = async (studentFields: Omit<StudentInterface, 'id'>): Promise<StudentInterface> => {
   const student = new Student();
@@ -38,9 +40,7 @@ export const addStudentDb = async (studentFields: Omit<StudentInterface, 'id'>):
 };
 
 /**
- * Добавление рандомных студента
- * @param amount количество рандомных записей
- * @returns Promise<StudentInterface>
+ * Добавление  рандомных студента
  */
 export const addRandomStudentsDb = async (amount: number = 10): Promise<StudentInterface[]> => {
   const students: StudentInterface[] = [];

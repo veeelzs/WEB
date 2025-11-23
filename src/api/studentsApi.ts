@@ -11,7 +11,7 @@ export const getStudentsApi = async (): Promise<StudentInterface[]> => {
     return students;
   }
   catch (err) {
-    console.log('>>> getGroupsApi', err);
+    console.log('>>> getStudentApi', err);
     return [] as StudentInterface[];
   }
 };
@@ -29,7 +29,6 @@ export const deleteStudentApi = async (studentId: number): Promise<number> => {
     }
     console.log('deleteStudentApi ok', studentId);
     debugger;
-
     return studentId;
   }
   catch (err) {
@@ -57,3 +56,22 @@ export const addStudentApi = async (student: StudentInterface): Promise<StudentI
     throw err;
   }
 };
+
+/*export const openStudentApi= async (studentId: number): Promise<number> => {
+  console.log('openStudentApi', studentId);
+  debugger;
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API}students/${studentId}`)
+
+    if (!response.ok) {
+      throw new Error(`Ошибка HTTP: ${response.status}${response.statusText}`);
+    }
+    console.log('openStudentApi ok', studentId);
+    debugger;
+    return studentId;
+  }
+  catch (err) {
+    console.log('>>> openStudentApi', err);
+    return -1;
+  }
+};*/

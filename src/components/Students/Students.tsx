@@ -14,34 +14,35 @@ const Students = (): React.ReactElement => {
     addStudentMutate,
   } = useStudents();
 
-   /**
-   * Удаление студента - обработчик события нажатия "удалить"
-   * @param studentId Ид студента
-   */
   const onDeleteHandler = (studentId: number): void => {
     if (confirm('Удалить студента?')) {
+      console.log('onDeleteHander',studentId);
       debugger;
-      console.log('onDeleteHandler', studentId);
-
-
       deleteStudentMutate(studentId);
     }
   };
+  const OnOpenHandler = (studentId: number): void => {
+    if (confirm('Открыть студента?')) {
+      console.log('onOpenHander', studentId);
+      window.location.href = `/students/${studentId}`;
+    }
+  };
 
-   /**
-   * Добавления студента - обработчик события нажатия "добавить"
-   * @param studentFormField Форма студента
+  /**
+   * Добавлениестудента-обработчик события нажатия "добавить"
+   * @param studentFormField форма студента
    */
   const onAddHandler = (studentFormField: FormFields): void => {
+    const nextid = students.length>0 ? Math.max(...students.map(s=> s.id))+1 : 1
     debugger;
     console.log('Добавление студента', studentFormField);
 
     addStudentMutate({
-      id: -1,
-      uuid: uuidv4(),
+      id: nextid,
       ...studentFormField,
-      contacts: "не заполнено",
-      groupId: studentFormField.groupId || 1,
+      //groupId: 1,
+      uuid: uuidv4(),
+      contacts: ''
     });
   };
 
@@ -50,13 +51,12 @@ const Students = (): React.ReactElement => {
       <AddStudent onAdd={onAddHandler} />
 
       {students.map((student: StudentInterface) => (
-        <div key={student.id || student.uuid} className={styles.StudentWrapper}>
-          <Student student={student} onDelete={onDeleteHandler} />
-          {/* Выводим группу студента */}
-          <div style={{ fontSize: '0.9em', color: '#555', marginTop: '4px' }}>
-            {student.group ? `Группа: ${student.group.name}` : 'Группа: не указана'}
-          </div>
-        </div>
+        <Student
+          key={student.id || student.uuid}
+          student={student}
+          onDelete={onDeleteHandler}
+          onOpen={OnOpenHandler}
+        />
       ))}
     </div>
   );

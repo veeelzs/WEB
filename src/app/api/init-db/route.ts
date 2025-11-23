@@ -6,6 +6,7 @@ export async function GET(): Promise<Response> {
     firstName: 'fname',
     lastName: 'lname',
     middleName: 'mname',
+    contacts: '',
     groupId: 1,
   });
 

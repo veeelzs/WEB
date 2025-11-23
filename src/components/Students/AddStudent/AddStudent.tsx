@@ -1,10 +1,11 @@
-'use client';
-
 import type StudentInterface from '@/types/StudentInterface';
-import type GroupInterface from '@/types/GroupInterface';
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import useGroups from '@/hooks/useGroups';
 import styles from './AddStudent.module.scss';
+import type GroupInterface from '@/types/GroupInterface';
+import Groups from '@/components/Groups/Groups'
+import useGroups from '@/hooks/useGroups';
+import { useState, useEffect } from 'react';
+import { getGroupsApi } from '@/api/groupsApi';
 
 export type FormFields = Pick<StudentInterface, 'firstName' | 'lastName' | 'middleName' | 'groupId'>;
 
@@ -12,27 +13,29 @@ interface Props {
   onAdd: (studentForm: FormFields) => void;
 }
 
-const AddStudent = ({ onAdd }: Props): React.ReactElement => {
-  const { groups } = useGroups(); // получаем список групп
 
+const AddStudent = ({ onAdd }: Props): React.ReactElement => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormFields>();
-
-  const onSubmit: SubmitHandler<FormFields> = studentForm => {
-    // groupId из select приходит как string, преобразуем в number
-    const formWithGroup = {
-      ...studentForm,
-      groupId: Number(studentForm.groupId),
+  const [groupId, SetGroupId] = useState<number>(1);
+  const [groups, setGroups] = useState<GroupInterface[]>([]);
+  useEffect(()=>{
+    const fetchGroups = async() => {
+      const data = await getGroupsApi();
+      setGroups(data);
+      if (data.length>0) SetGroupId(data[0].id);
     };
-    onAdd(formWithGroup);
-  };
+    fetchGroups();
+  },[] );
+
+  const onSubmit: SubmitHandler<FormFields> = studentForm => onAdd(studentForm);
 
   return (
     <div className={styles.AddStudent}>
-      <h2>Добавление студента</h2>
+      <h2>Добавления студента</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
 
@@ -54,16 +57,19 @@ const AddStudent = ({ onAdd }: Props): React.ReactElement => {
         />
         {errors.middleName && <div>Обязательное поле</div>}
 
-        <select {...register('groupId', { required: false })}>
-          <option value="">Выберите группу</option>
-          {groups.map((group: GroupInterface) => (
-            <option key={group.id} value={group.id ? group.id : 1}>{group.name ? group.name : "не задано"}</option>
+        <select
+          {...register('groupId', { required: true })}
+        >
+          {groups.map((group) => (
+            <option key={group.id} value={group.id}>
+              {group.name}
+            </option>
           ))}
-        </select>
-        {errors.groupId && <div>Обязательное поле</div>}
+      </select>
 
         <input type="submit" value="Добавить" />
       </form>
+
     </div>
   );
 };

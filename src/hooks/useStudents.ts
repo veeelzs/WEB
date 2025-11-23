@@ -3,12 +3,13 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { addStudentApi, deleteStudentApi, getStudentsApi } from '@/api/studentsApi';
+import { addStudentApi, deleteStudentApi, getStudentsApi, } from '@/api/studentsApi';
 import type StudentInterface from '@/types/StudentInterface';
 
 interface StudentsHookInterface {
   students: StudentInterface[];
   deleteStudentMutate: (studentId: number) => void;
+  //openStudentMutate: (studentId: number) => void;
   addStudentMutate: (student: StudentInterface) => void;
 }
 
@@ -43,22 +44,21 @@ const useStudents = (): StudentsHookInterface => {
       }));
       // обновляем данные в TanStackQuery
       queryClient.setQueryData<StudentInterface[]>(['students'], updatedStudents);
-
-      console.log('deleteStudentMutate onMutate', previousStudents, updatedStudents);
+      
+      console.log('deleteStudentMutate onMutate', previousStudents,updatedStudents);
       debugger;
 
       return { previousStudents, updatedStudents };
     },
     onError: (err, variables, context) => {
-      console.log('deleteStudentMutate  err', err);
-      queryClient.setQueryData<StudentInterface[]>(['students'], context?.previousStudents);
+      console.log('>>> deleteStudentMutate  err', err);
       debugger;
+      queryClient.setQueryData<StudentInterface[]>(['students'], context?.previousStudents);
     },
     // обновляем данные в случаи успешного выполнения mutationFn: async (studentId: number) => deleteStudentApi(studentId),
     onSuccess: async (studentId, variables, { previousStudents }) => {
-      console.log('deleteStudentMutate  onSuccess', studentId);
       debugger;
-
+      console.log('deleteStudentMutate OnSuccess',studentId);
       await queryClient.cancelQueries({ queryKey: ['students'] });
       // вариант 1 - запрос всех записей
       // refetch();
@@ -116,9 +116,61 @@ const useStudents = (): StudentsHookInterface => {
     },
   });
 
+  /*const openStudentMutate = useMutation({
+    // вызов API open
+    mutationFn: async (studentId: number) => openStudentApi(studentId),
+    // оптимистичная мутация (обновляем данные на клиенте до API запроса open)
+    onMutate: async (studentId: number) => {
+      await queryClient.cancelQueries({ queryKey: ['students'] });
+      // получаем данные из TanStackQuery
+      const previousStudents = queryClient.getQueryData<StudentInterface[]>(['students']);
+      let updatedStudents = [...(previousStudents ?? [])];
+
+      if (!updatedStudents) return;
+
+      // помечаем удаляемую запись
+      updatedStudents = updatedStudents.map((student: StudentInterface) => ({
+        ...student,
+        ...(student.id === studentId ? { isDeleted: true } : {}),
+      }));
+      // обновляем данные в TanStackQuery
+      queryClient.setQueryData<StudentInterface[]>(['students'], updatedStudents);
+      
+      console.log('openStudentMutate onMutate', previousStudents,updatedStudents);
+      debugger;
+
+      return { previousStudents, updatedStudents };
+    },
+    onError: (err, variables, context) => {
+      console.log('>>> openStudentMutate  err', err);
+      debugger;
+      queryClient.setQueryData<StudentInterface[]>(['students'], context?.previousStudents);
+    },
+    // обновляем данные в случаи успешного выполнения mutationFn: async (studentId: number) => openStudentApi(studentId),
+    onSuccess: async (studentId, variables, { previousStudents }) => {
+      debugger;
+      console.log('openStudentMutate OnSuccess',studentId);
+      await queryClient.cancelQueries({ queryKey: ['students'] });
+      // вариант 1 - запрос всех записей
+      // refetch();
+
+      // вариант 2 - удаление конкретной записи
+      if (!previousStudents) {
+        return;
+      }
+      const updatedStudents = previousStudents.filter((student: StudentInterface) => student.id !== studentId);
+      queryClient.setQueryData<StudentInterface[]>(['students'], updatedStudents);
+    },
+    // onSettled: (data, error, variables, context) => {
+    //   // вызывается после выполнения запроса в случаи удачи или ошибке
+    //   console.log('>> deleteStudentMutate onSettled', data, error, variables, context);
+    // },
+  });*/
+
   return {
     students: data ?? [],
     deleteStudentMutate: deleteStudentMutate.mutate,
+    //openStudentMutate: openStudentMutate.mutate,
     addStudentMutate: addStudentMutate.mutate,
   };
 };

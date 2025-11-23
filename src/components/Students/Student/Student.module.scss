@@ -2,9 +2,43 @@
   margin: 10px 0;
   display: grid;
   gap: 10px;
-  grid-template-columns: 370px auto;
-
+  grid-template-columns: 370px auto auto;
   transition: opacity 0.9s ease-in-out;
+  align-items: center;
+}
+
+.Student button {
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  min-width: 80px;
+}
+
+// кнопка Удалить
+.Student button:first-of-type {
+  background-color: #ec6b62;
+  color: white;
+  
+  // при наведении
+  &:hover {
+    background-color: #d32f2f;
+    transform: translateY(-1px);
+  }
+}
+
+// кнопка Открыть
+.Student button:last-of-type {
+  background-color: #6db070;
+  color: white;
+  
+  &:hover {
+    background-color: #388e3c;
+    transform: translateY(-1px);
+  }
 }
 
 .--isDeleted {
@@ -19,14 +53,7 @@
 .--isNew {
   opacity: 0.5;
   
-  
   button {
     display: none;
   }
-}
-
-.StudentLink {
-  cursor: pointer;
-  text-decoration: underline;
-  color: blue;
 }

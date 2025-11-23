@@ -9,9 +9,8 @@ export class Group {
   @Column()
   name!: string;
 
-  @OneToMany(() => Student, student => student.group)
-  students!: Student[];
-
   @Column()
   contacts!: string;
+  @OneToMany(() => Student, (student) => student.group)
+  students!: Student[];
 }

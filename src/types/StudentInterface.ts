@@ -1,4 +1,4 @@
-import type GroupInterface from './GroupInterface';
+import GroupInterface from "./GroupInterface";
 
 interface StudentInterface {
   id: number;
@@ -6,11 +6,11 @@ interface StudentInterface {
   firstName: string;
   lastName: string;
   middleName: string;
-  contacts?: string;
+  contacts: string;
   groupId: number;
   isDeleted?: boolean;
   isNew?: boolean;
-  group?: GroupInterface;
-}
+  group?: GroupInterface | null;
+};
 
 export default StudentInterface;

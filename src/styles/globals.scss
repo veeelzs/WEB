@@ -1,12 +1,12 @@
 @use './main';
 
 :root {  
-  --color: #272727;
-  --color2: #FFF;
+  --color: #080808;  // шрифт сверху и основной
+  --color2: #080808;  //шрифт снизу
   --color3: #F00;
-  --background: #FFF;
-  --background2: #E1E1E1;
-  --background3: #434343;  
+  --background: #FFF8DC;  //основной фон
+  --background2: #c19e69;  //шапка
+  --background3: #c19e69;  //футер 
 }
 
 @media (prefers-color-scheme: dark) {
