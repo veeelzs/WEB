@@ -13,32 +13,36 @@ interface Props {
   onAdd: (studentForm: FormFields) => void;
 }
 
-
 const AddStudent = ({ onAdd }: Props): React.ReactElement => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<FormFields>();
+  
   const [groupId, SetGroupId] = useState<number>(1);
   const [groups, setGroups] = useState<GroupInterface[]>([]);
-  useEffect(()=>{
+  
+  useEffect(() => {
     const fetchGroups = async() => {
       const data = await getGroupsApi();
       setGroups(data);
-      if (data.length>0) SetGroupId(data[0].id);
+      if (data.length > 0) SetGroupId(data[0].id);
     };
     fetchGroups();
-  },[] );
+  }, []);
 
-  const onSubmit: SubmitHandler<FormFields> = studentForm => onAdd(studentForm);
+  const onSubmit: SubmitHandler<FormFields> = studentForm => {
+    onAdd(studentForm);
+    reset(); 
+  };
 
   return (
     <div className={styles.AddStudent}>
       <h2>Добавления студента</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-
         <input
           placeholder="Фамилия"
           {...register('lastName', { required: true })}
@@ -65,11 +69,10 @@ const AddStudent = ({ onAdd }: Props): React.ReactElement => {
               {group.name}
             </option>
           ))}
-      </select>
+        </select>
 
         <input type="submit" value="Добавить" />
       </form>
-
     </div>
   );
 };
