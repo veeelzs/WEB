@@ -19,7 +19,7 @@ const useStudents = (): StudentsHookInterface => {
   const { data, refetch } = useQuery({
     queryKey: ['students'],
     queryFn: () => getStudentsApi(),
-    enabled: false,
+    enabled: true,
   });
 
   /**
