@@ -12,14 +12,12 @@ const Groups = (): React.ReactElement => {
   return (
     <div className={styles.Groups}>
       {groups.map((group: GroupInterface) => (
-        <section key={group.id}>
-          <Group
-            group={group}
-          />
+        <div key={group.id} className={styles.groupSection}>
+          <Group group={group} />
           {group.students.map((student: StudentInterface) => (
-              <div key={student.id}>{`${student.id} - ${student.lastName} ${student.firstName}`}</div>
+            <div key={student.id}>{`${student.id} - ${student.lastName} ${student.firstName}`}</div>
           ))}
-        </section>
+        </div>
       ))}
     </div>
   );
