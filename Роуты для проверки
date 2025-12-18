@@ -1,0 +1,9 @@
+http://localhost:3000/api/db/init
+
+http://localhost:3000/api/auth/add-test
+
+http://localhost:3000/api/courses/add-test
+
+http://localhost:3000/api/groups/add-test
+
+http://localhost:3000/api/students/add-test
