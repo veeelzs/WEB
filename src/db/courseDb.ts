@@ -1,5 +1,5 @@
 import { Course } from './entity/Course.entity';
-import AppDataSource from './AppDataSource';
+import AppDataSource, { dbInit } from './AppDataSource';
 import type CourseInterface from '@/types/CourseInterface';
 import type { Repository } from 'typeorm';
 
@@ -10,9 +10,7 @@ const courseRepository = (): Repository<Course> => AppDataSource.getRepository(C
  * @returns Promise<CourseInterface[]>
  */
 export const getCoursesDb = async (): Promise<CourseInterface[]> => {
-  if (!AppDataSource.isInitialized) {
-    await AppDataSource.initialize();
-  }
+  await dbInit();
   return await courseRepository().find({
     relations: ['groups', 'groups.students'],
   });
@@ -25,6 +23,7 @@ export const getCoursesDb = async (): Promise<CourseInterface[]> => {
 export const addCourseDb = async (
   courseFields: Omit<CourseInterface, 'id' | 'groups'>,
 ): Promise<CourseInterface> => {
+  await dbInit();
   const course = new Course();
   const newCourse = await courseRepository().save({
     ...course,

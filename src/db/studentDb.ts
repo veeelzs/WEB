@@ -1,16 +1,21 @@
 import { Student } from './entity/Student.entity';
 import type StudentInterface from '@/types/StudentInterface';
 import getRandomFio from '@/utils/getRandomFio';
-import AppDataSource from './AppDataSource';
+import AppDataSource, { dbInit } from './AppDataSource';
+import type { Repository } from 'typeorm';
 
-const studentRepository = AppDataSource.getRepository(Student);
+const getStudentRepository = async (): Promise<Repository<Student>> => {
+  await dbInit();
+  return AppDataSource.getRepository(Student);
+};
 
 /**
  * Получение студентов
  * @returns Promise<StudentInterface[]>
  */
 export const getStudentsDb = async (): Promise<StudentInterface[]> => {
-  return await studentRepository.find({
+  const repository = await getStudentRepository();
+  return await repository.find({
     relations: ['group'],
   });
 };
@@ -21,7 +26,8 @@ export const getStudentsDb = async (): Promise<StudentInterface[]> => {
  * @returns
  */
 export const deleteStudentDb = async (studentId: number): Promise<number> => {
-  await studentRepository.delete(studentId);
+  const repository = await getStudentRepository();
+  await repository.delete(studentId);
   return studentId;
 };
 
@@ -32,7 +38,8 @@ export const deleteStudentDb = async (studentId: number): Promise<number> => {
  */
 export const addStudentDb = async (studentFields: Omit<StudentInterface, 'id'>): Promise<StudentInterface> => {
   const student = new Student();
-  const newStudent = await studentRepository.save({
+  const repository = await getStudentRepository();
+  const newStudent = await repository.save({
     ...student,
     ...studentFields,
   });

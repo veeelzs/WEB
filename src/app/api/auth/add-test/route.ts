@@ -1,6 +1,7 @@
 import { hashPassword } from '@/utils/password';
 import { User } from '@/db/entity/User.entity';
 import AppDataSource from '@/db/AppDataSource';
+import { dbInit } from '@/db/AppDataSource';
 
 const defaultUsers = [
   {
@@ -16,6 +17,7 @@ const defaultUsers = [
 ];
 
 export async function GET(): Promise<Response> {
+  await dbInit();
   let newUsers: number = 0;
   let existUsers: number = 0;
   const repository = AppDataSource.getRepository(User);
