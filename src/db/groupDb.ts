@@ -1,8 +1,9 @@
-import { Group } from './entity/Group.entity';
-import AppDataSource from './AppDataSource';
 import type GroupInterface from '@/types/GroupInterface';
+import AppDataSource from './AppDataSource';
+import { Group } from './entity/Group.entity';
+import type { Repository } from 'typeorm';
 
-const groupRepository =() => AppDataSource.getRepository(Group);
+const groupRepository = (): Repository<Group> => AppDataSource.getRepository(Group);
 
 /**
  * Получение групп
@@ -13,27 +14,17 @@ export const getGroupsDb = async (): Promise<GroupInterface[]> => {
   if (!AppDataSource.isInitialized) {
     await AppDataSource.initialize();
   }
-  const groupRepository = AppDataSource.getRepository(Group);
-  return await groupRepository.find(
-    {
-      relations: ['students']
-    }
-  );
+  const repository = AppDataSource.getRepository(Group);
+  return await repository.find({
+    relations: ['students', 'course'],
+  });
 };
-/*export const getGroupsDb = async (): Promise<GroupInterface[]> => {
-  return await groupRepository().find(
-    {
-      relations: ['students']
-    }
-  );
-  
-};*/
 
 /**
  * Добавление группы
  * @returns  Promise<GroupInterface>
  */
-export const addGroupsDb = async (groupFields: Omit<GroupInterface, 'id'>): Promise<GroupInterface> => {
+export const addGroupsDb = async (groupFields: Omit<GroupInterface, 'id' | 'students' | 'course'>): Promise<GroupInterface> => {
   const group = new Group();
   const newGroup = await groupRepository().save({
     ...group,

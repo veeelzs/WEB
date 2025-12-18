@@ -1,0 +1,28 @@
+.Course {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title {
+  margin-bottom: 4px;
+  font-size: 30;
+  color: rgb(2, 56, 38);
+  font-weight: bold;
+}
+
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 14px;
+  color: #333;
+}
+
+.groupItem {
+  padding-left: 4px;
+}
+
+.empty {
+  color: #999;
+}

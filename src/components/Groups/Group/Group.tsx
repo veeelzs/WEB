@@ -7,7 +7,7 @@ interface Props {
 
 const Group = ({ group }: Props): React.ReactElement => {
   
-
+  
   return (
     <div className={styles.Group}>
       {`${group.id || 'xxxx'} - ${group.name} `}

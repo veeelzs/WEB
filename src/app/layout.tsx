@@ -4,6 +4,7 @@ import 'reflect-metadata';
 import TanStackQuery from '@/containers/TanStackQuery';
 import queryClient from '@/api/reactQueryClient';
 import { getGroupsApi } from '@/api/groupsApi';
+import { getCoursesApi } from '@/api/coursesApi';
 import Header from '@/components/layout/Header/Header';
 import Footer from '@/components/layout/Footer/Footer';
 import Main from '@/components/layout/Main/Main';
@@ -31,6 +32,12 @@ const RootLayout = async ({ children }: Readonly<{ children: React.ReactNode }>)
   await queryClient.prefetchQuery({
     queryKey: ['groups'],
     queryFn: getGroupsApi,
+  });
+
+  // выполняется на сервере - загрузка курсов
+  await queryClient.prefetchQuery({
+    queryKey: ['courses'],
+    queryFn: getCoursesApi,
   });
 
   // выполняется на сервере - загрузка студентов

@@ -1,10 +1,13 @@
-import StudentInterface from "./StudentInterface";
+import type StudentInterface from './StudentInterface';
+import type CourseInterface from './CourseInterface';
 
 interface GroupInterface {
   id: number;
   name: string;
   contacts: string;
-  students: StudentInterface[]; 
+  courseId?: number | null;
+  course?: CourseInterface | null;
+  students: StudentInterface[];
 };
 
 export default GroupInterface;
